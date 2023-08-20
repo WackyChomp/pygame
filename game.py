@@ -12,13 +12,26 @@ class Game:
     self.clock = pygame.time.Clock() # forces game to run at specific frame rate
 
     self.img = pygame.image.load('data/images/clouds/cloud_1.png')
+    self.img.set_colorkey((0,0,0))      # makes color become transparent if same color
+
     self.img_pos = [160, 260]
     self.movement = [False, False]
+
+    self.collision_area = pygame.Rect(50, 50, 300, 50)
 
   def run(self):
     # Game screen runs in continuous loop with changing data
     while True:
       self.screen.fill('crimson')      # colors as rgb,text,hex / covers trailing images after movement
+
+      # rectangle collision
+      img_r = pygame.Rect(self.img_pos[0], self.img_pos[1], self.img.get_width(), self.img.get_height())
+      if img_r.colliderect(self.collision_area):
+        pygame.draw.rect(self.screen, 'green', self.collision_area)
+      else:
+        pygame.draw.rect(self.screen, 'grey', self.collision_area)
+
+      # cloud movement
       self.img_pos[1] += (self.movement[1] - self.movement[0]) * 3    # method of adding boolean / multiplication affects speed
       self.screen.blit(self.img, self.img_pos)
 
@@ -36,7 +49,6 @@ class Game:
             self.movement[0] = False
           if event.key == pygame.K_DOWN:
             self.movement[1] = False
-
 
 
       pygame.display.update()
