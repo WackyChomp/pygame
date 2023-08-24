@@ -1,6 +1,7 @@
 import sys
 import pygame
 
+from scripts.entities import PhysicsEntity
 
 class Game:
   def __init__(self):
@@ -19,6 +20,8 @@ class Game:
 
     self.collision_area = pygame.Rect(50, 50, 300, 50)
 
+    self.player = PhysicsEntity(self, 'player', (50,50), (8,15))
+
   def run(self):
     # Game screen runs in continuous loop with changing data
     while True:
@@ -35,6 +38,10 @@ class Game:
       self.img_pos[1] += (self.movement[1] - self.movement[0]) * 3    # method of adding boolean / multiplication affects speed
       self.screen.blit(self.img, self.img_pos)
 
+      # player
+      self.player.update((self.movement[1] - self.movement[0], 0))    # (x,y)
+      self.player.render(self.screen)
+
       for event in pygame.event.get():
         if event.type == pygame.QUIT:   # registers pressing x button to close screen
           pygame.quit()
@@ -44,10 +51,18 @@ class Game:
             self.movement[0] = True
           if event.key == pygame.K_DOWN:
             self.movement[1] = True
+          if event.key == pygame.K_LEFT:
+            self.movement[0] = True
+          if event.key == pygame.K_RIGHT:
+            self.movement[1] = True
         if event.type == pygame.KEYUP:      # key release
           if event.key == pygame.K_UP:
             self.movement[0] = False
           if event.key == pygame.K_DOWN:
+            self.movement[1] = False
+          if event.key == pygame.K_LEFT:
+            self.movement[0] = False
+          if event.key == pygame.K_RIGHT:
             self.movement[1] = False
 
 
