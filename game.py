@@ -2,6 +2,7 @@ import sys
 import pygame
 
 from scripts.entities import PhysicsEntity
+from scripts.utils import load_image
 
 class Game:
   def __init__(self):
@@ -18,7 +19,11 @@ class Game:
     self.img_pos = [160, 260]
     self.movement = [False, False]
 
-    self.collision_area = pygame.Rect(50, 50, 300, 50)
+    self.assets = {
+      'player': load_image('entities/player.png')
+    }
+
+    self.collision_area = pygame.Rect(100, 200, 300, 50)   # right, down, extend right, extend down
 
     self.player = PhysicsEntity(self, 'player', (50,50), (8,15))
 
